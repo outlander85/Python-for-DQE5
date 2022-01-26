@@ -18,6 +18,7 @@ llist = [randint(0, 1000) for i in range(100)]
 # print('sum = ', sum(llist))
 # print('lengt llist = '+str(len(llist)))
 
+
 # 2.sorting list from min to max (without using sort())
 
 # in this step we fill new list with ordered values from min to max.
@@ -31,6 +32,7 @@ for j in range(len(llist)):
 # print(ordered_llist)
 # print('lengt ordered_llist = '+str(len(ordered_llist)))
 # print('sum = ', sum(ordered_llist))
+
 
 # 3.calculate average for even and odd numbers
 
