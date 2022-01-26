@@ -1,4 +1,5 @@
 # 1.create list of 100 random numbers from 0 to 1000
+
 from random import randint
 
 # Declaring variables
@@ -18,6 +19,7 @@ llist = [randint(0, 1000) for i in range(100)]
 # print('lengt llist = '+str(len(llist)))
 
 # 2.sorting list from min to max (without using sort())
+
 # in this step we fill new list with ordered values from min to max.
 # llist become clear and for next calculations we should use ordered_llist
 for j in range(len(llist)):
@@ -46,5 +48,6 @@ odd_list = [int(i) for i in ordered_llist if i % 2 != 0]
 
 
 # 4.print both average result in console
+
 print('average even numbers = '+str(sum(even_list)/len(even_list)))
 print('average odd numbers = '+str(sum(even_list)/len(odd_list)))
