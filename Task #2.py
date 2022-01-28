@@ -8,20 +8,26 @@
 # import section
 import random
 import string
-import collections
 
+# declaring section
 dict_list = []
+keys_list = []
 dict_a = {}
 result_dict = {}
+
+# generating number of dicts
 for r in range(2, random.randint(2, 10)):
 
-    for i in range(2, random.randint(2, 10)):
-        key = string.ascii_letters
-        random_key = random.choice(key)
+    # generating random lenght list of unique keys for each dictionary
+    keys_list = random.sample(string.ascii_letters, random.randint(2, 10))
+
+    # appending dictionaries
+    for i in keys_list:
+        random_key = i
         random_value = random.randint(1, 100)
         # print(random_key, random_value)
         dict_a[random_key] = random_value
-        i+1
+
 
     dict_list.append(dict_a)
 
