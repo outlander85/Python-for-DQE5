@@ -37,8 +37,10 @@ for j in range(len(llist)):
 # 3.calculate average for even and odd numbers
 
 # filling even_list and odd_list lists with even and odd values
+
 even_list = [int(i) for i in ordered_llist if i % 2 == 0]
 odd_list = [int(i) for i in ordered_llist if i % 2 != 0]
+
 
 # section used for debug
 # print(even_list)
@@ -50,6 +52,14 @@ odd_list = [int(i) for i in ordered_llist if i % 2 != 0]
 
 
 # 4.print both average result in console
-
-print('average even numbers = '+str(sum(even_list)/len(even_list)))
-print('average odd numbers = '+str(sum(even_list)/len(odd_list)))
+try:
+    print('average even numbers = ' + str(sum(even_list) / len(even_list)))
+    print('average odd numbers = ' + str(sum(even_list) / len(odd_list)))
+except ZeroDivisionError:
+    print('Division by zero is prohibited')
+except:
+    print('Something is wrong')
+else:
+    print('Everything is OK')
+finally:
+    print('Job has been finished')
