@@ -56,11 +56,15 @@ odd_list = [int(i) for i in ordered_llist if i % 2 != 0]
 try:
     print('average even numbers = ' + str(sum(even_list) / len(even_list)))
     print('average odd numbers = ' + str(sum(even_list) / len(odd_list)))
+# exception for division by zero
 except ZeroDivisionError:
     print('Division by zero is prohibited')
+# exception for other errors
 except:
     print('Something is wrong')
+# message for successful work
 else:
     print('Everything is OK')
+# persistent completion message
 finally:
     print('Job has been finished')
