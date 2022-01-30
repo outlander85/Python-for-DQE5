@@ -37,7 +37,8 @@ for j in range(len(llist)):
 # 3.calculate average for even and odd numbers
 
 # filling even_list and odd_list lists with even and odd values
-
+    # If the remainder of dividing by two is zero, the number is even
+    # If not equal - odd
 even_list = [int(i) for i in ordered_llist if i % 2 == 0]
 odd_list = [int(i) for i in ordered_llist if i % 2 != 0]
 
