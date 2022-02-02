@@ -12,19 +12,24 @@ import string
 # declaring section
 dict_list = []
 result_dict = {}
-# keys_list = []
-# dict_a = {}
+count_of_dicts = int, 0
+common_count_of_dicts = 0
+count_of_keys_in_dict = 0
 
 # generating number of dicts
-for r in range(2, random.randint(2, 10)):
+count_of_dicts = random.randint(2, 10)
+print('count_of_dicts:', count_of_dicts)
+while common_count_of_dicts < count_of_dicts:
 
     # generating random lenght list of unique keys for each dictionary
     # declaring and re-creating for next circle
+    count_of_keys_in_dict = random.randint(2, 10)
+    print('count_of_keys_in_dict:', count_of_keys_in_dict)
     keys_list = []
     dict_a = {}
 
-    keys_list = random.sample(string.ascii_lowercase, random.randint(2, 10))
-
+    keys_list = random.sample(string.ascii_lowercase, count_of_keys_in_dict)
+    # print(keys_list)
     # appending dictionaries
     for i in keys_list:
         random_key = i
@@ -35,12 +40,12 @@ for r in range(2, random.randint(2, 10)):
         # print(dict_a)
 
     dict_list.append(dict_a)
-
+    common_count_of_dicts = common_count_of_dicts + 1
 # print(key)
 # print(random_key)
 # print(random_value)
 print(dict_list)
-
+"""
 # 2. get previously generated list of dicts and create one common dict:
 #
 # if dicts have same key, we will take max value, and rename key with dict number with max value
@@ -85,6 +90,7 @@ for i in dict_list:
             dict_with_indexes[key] = key + '_' + str(co)
     co = co + 1
 
+# Print version used for debug
 # print('keys and max values:', dict_with_max_values)
 # print('keys with duplicates:', dict_is_has_duplicates)
 # print('keys with indexes:', dict_with_indexes)
@@ -94,3 +100,4 @@ for key, value in dict_with_indexes.items():
     final_dict[value] = dict_with_max_values.get(key)
 
 print('final_dict:', final_dict)
+"""
