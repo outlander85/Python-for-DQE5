@@ -67,23 +67,23 @@ for i in dict_list:
         else:
             dict_is_has_duplicates[key] = 1
 
-co = 1
+cnt = 1
 for i in dict_list:
     for key, value in i.items():
-        if co == 1:
+        if cnt == 1:
             dict_with_indexes[key] = key
 
-        elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] == 0:
+        elif cnt != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] == 0:
             dict_with_indexes[key] = key
 
-        elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] != 0:
-            dict_with_indexes[key] = key + '_' + str(co)
+        elif cnt != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] != 0:
+            dict_with_indexes[key] = key + '_' + str(cnt)
 
-        elif co != 1 and key in dict_with_indexes \
+        elif cnt != 1 and key in dict_with_indexes \
                 and value == dict_with_max_values.get(key) \
                 and key == dict_with_indexes.get(key):
-            dict_with_indexes[key] = key + '_' + str(co)
-    co = co + 1
+            dict_with_indexes[key] = key + '_' + str(cnt)
+    cnt = cnt + 1
 
 # Print version used for debug
 # print('keys and max values:', dict_with_max_values)
