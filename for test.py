@@ -15,60 +15,60 @@
 #   print("Something went wrong")
 # finally:
 #   print("The 'try except' is finished")
-
-
-a = [{'j': 27, 'd': 10},
-     {'l': 81, 'j': 77, 'p': 100, 'g': 84},
-     {'s': 98, 'j': 35, 'c': 63, 'h': 66, 'z': 29, 'u': 62, 'o': 92, 't': 90},
-     {'t': 80, 'c': 63},
-     {'j': 77}]
-keys = []
-keys_numbered = []
-values = []
-final_dict = {}
-dict_with_indexes = {}  # key:number_of_dict
-dict_with_max_values = {}  # key:max_value
-dict_is_has_duplicates = {}  # 0 or 1 in case if there's duplicate, but first value is bigger
-
-for i in a:
-    for key, value in i.items():
-        if key not in dict_with_max_values or (dict_with_max_values and value > dict_with_max_values.get(key)):
-            dict_with_max_values[key] = value
-
-for i in a:
-    for key in i.keys():
-        if key not in dict_is_has_duplicates:
-            dict_is_has_duplicates[key] = 0
-        else:
-            dict_is_has_duplicates[key] = 1
-
-co = 1
-for i in a:
-    for key, value in i.items():
-        if co == 1:
-            dict_with_indexes[key] = key
-
-        elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] == 0:
-            dict_with_indexes[key] = key
-
-        elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] != 0:
-            dict_with_indexes[key] = key + '_' + str(co)
-
-        elif co != 1 and key in dict_with_indexes \
-                and value == dict_with_max_values.get(key) \
-                and key == dict_with_indexes.get(key):
-            dict_with_indexes[key] = key + '_' + str(co)
-    co = co + 1
-
-# print('keys and max values:', dict_with_max_values)
-# print('keys with duplicates:', dict_is_has_duplicates)
-# print('keys with indexes:', dict_with_indexes)
-# print('dict_is_has_duplicates:', dict_is_has_duplicates)
-
-for key, value in dict_with_indexes.items():
-    final_dict[value] = dict_with_max_values.get(key)
-
-print('final_dict:', final_dict)
+#
+#
+# a = [{'j': 27, 'd': 10},
+#      {'l': 81, 'j': 77, 'p': 100, 'g': 84},
+#      {'s': 98, 'j': 35, 'c': 63, 'h': 66, 'z': 29, 'u': 62, 'o': 92, 't': 90},
+#      {'t': 80, 'c': 63},
+#      {'j': 77}]
+# keys = []
+# keys_numbered = []
+# values = []
+# final_dict = {}
+# dict_with_indexes = {}  # key:number_of_dict
+# dict_with_max_values = {}  # key:max_value
+# dict_is_has_duplicates = {}  # 0 or 1 in case if there's duplicate, but first value is bigger
+#
+# for i in a:
+#     for key, value in i.items():
+#         if key not in dict_with_max_values or (dict_with_max_values and value > dict_with_max_values.get(key)):
+#             dict_with_max_values[key] = value
+#
+# for i in a:
+#     for key in i.keys():
+#         if key not in dict_is_has_duplicates:
+#             dict_is_has_duplicates[key] = 0
+#         else:
+#             dict_is_has_duplicates[key] = 1
+#
+# co = 1
+# for i in a:
+#     for key, value in i.items():
+#         if co == 1:
+#             dict_with_indexes[key] = key
+#
+#         elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] == 0:
+#             dict_with_indexes[key] = key
+#
+#         elif co != 1 and key not in dict_with_indexes and dict_is_has_duplicates[key] != 0:
+#             dict_with_indexes[key] = key + '_' + str(co)
+#
+#         elif co != 1 and key in dict_with_indexes \
+#                 and value == dict_with_max_values.get(key) \
+#                 and key == dict_with_indexes.get(key):
+#             dict_with_indexes[key] = key + '_' + str(co)
+#     co = co + 1
+#
+# # print('keys and max values:', dict_with_max_values)
+# # print('keys with duplicates:', dict_is_has_duplicates)
+# # print('keys with indexes:', dict_with_indexes)
+# # print('dict_is_has_duplicates:', dict_is_has_duplicates)
+#
+# for key, value in dict_with_indexes.items():
+#     final_dict[value] = dict_with_max_values.get(key)
+#
+# print('final_dict:', final_dict)
 
 # k = 1
 # for i in a:
@@ -124,3 +124,49 @@ for i in a1:
 
 print(a2)
 """
+
+# a = """text
+# """
+# print(len(a))
+# print(a[4])
+
+# txt = "welcome to the jungle"
+#
+# x = txt.split()
+#
+# print(x)
+
+# print(" iZ ".lower())
+#
+# variable = """homEwork:
+# 	tHis iz your homeWork, copy these Text to variable.
+#
+# 	You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
+#
+# 	it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE.
+#
+# 	last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87."""
+#
+# variable = ' '.join([s[0].upper() + s[1:] for s in variable.split('/n')])
+#
+# print(variable)
+
+
+# s = 'a;b;c;d'
+# slist = list(s)
+# for i, c in enumerate(slist):
+#     if slist[i] == ';' and 0 <= i <= 3: # only replaces semicolons in the first part of the text
+#         slist[i] = ':'
+# s = ''.join(slist)
+# print(s) # prints a:b:c;d
+# usernames = ["Joey Tribbiani", "Monica Geller", "Chandler Bing", "Phoebe Buffay"]
+#
+# for i in range(len(usernames)):
+#     usernames[i] = usernames[i].lower().replace(" ", "_")
+#
+# print(usernames)
+
+import re
+
+result = re.sub(r'. \w', '. \W', 'AV Analytics. xidhya AV')
+print(result)

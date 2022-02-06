@@ -1,14 +1,3 @@
-"""
-homEwork:
-	tHis iz your homeWork, copy these Text to variable.
-
-	You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
-
-	it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE.
-
-	last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
-"""
-# --------------------------------------------------------------------------------------------------------------------------------------------------------
 variable = """homEwork:
 	tHis iz your homeWork, copy these Text to variable. 
 
@@ -20,31 +9,63 @@ variable = """homEwork:
 
 import string
 import re
-a = []
-b = []
-c = []
+a = 0
+variable = variable.lower()
+print('variable:', repr(variable))
 
-# print(variable)
-# variable = variable.replace(" iz ".lower(), " is ")
-variable = variable.replace("\n\n", "\n")
-# variable = ' '.join(variable.split())
+# Delete multi-\n's
+a2 = variable.split("\n")
+print('a2:', a2)
+while a < len(a2):
+    if a2[a] == '' or a2[a] == ' ':
+        a2.remove(a2[a])
+    else:
+        a = a+1
+print('Modified a2:', a2)
 
-"""
-variable = variable.split("\t")
-for i in variable:
-    # variable = variable.replace("\t", "")
-    i = i.replace("\n", "")
-    a.append(i)
-print(variable)
-"""
-a2 = variable.split("\n\t")
-a3 = [x.capitalize() for x in a2]
+a3 = [x.strip().capitalize() for x in a2]
+print('a3:', a3)
+
 a4 = "\n\t".join(a3)
+print('a4:', a4)
+print('a4:', repr(a4))
 
-a5 = a4.split(". ")
-a6 = [x.capitalize() for x in a5]
-a7 = ". ".join(a6)
-print(a6)
+a5 = a4.replace('“iz”', ' “iz”').replace(' iz ', ' is ')
+print('a5:', a5)
+    #     ttr = c.replace(a4[p+2], c[p+2].upper())
+    # else:
+    #     ttr = a4[p]
+    # print(ttr)
+# print('CAP:', a4)
+# b = 0
+# d = 0
+# while b < len(a4):
+#     if a4(d-2)[b - 1] != '.':
+# # print(repr(a4))
+
+#
+# a5 = a4.split(". ")
+# print('a5:', a5)
+# a6 = [x.capitalize() for x in a5]
+# a7 = ". ".join(a6)
+# print(a7)
+# print(a5(0))
+
+#
+# b = 0
+# while b < len(a5):
+#
+#         print('qqq', a5(-1)[b-1])
+#         a5.strip().lover(a5[b])
+#     elif a2(-1)[b-1] == '.':
+#         print('www', a5(-1)[b-1])
+#
+#     else:
+#         b = b+1
+# print('CAP a5:', a5)
+
+#
+
 
 
 # for k in a2:
