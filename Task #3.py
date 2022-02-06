@@ -32,12 +32,27 @@ print('a4:', repr(a4))
 
 a5 = a4.replace('“iz”', ' “iz”').replace(' iz ', ' is ')
 print('a5:', a5)
-    #     ttr = c.replace(a4[p+2], c[p+2].upper())
-    # else:
-    #     ttr = a4[p]
-    # print(ttr)
-# print('CAP:', a4)
-# b = 0
+
+additional_sentence_words = []
+a6 = a5.split()
+print(a6)
+
+for i in range(len(a6)):
+    if re.findall('[.!?]', a6[i]):
+        additional_sentence_words.append(re.sub('[.!?]', '', a6[i]))
+additional_sentence = ' '.join(additional_sentence_words).capitalize() + '.'
+print(additional_sentence)
+
+final_sentence = a5 + ' \n\t' + additional_sentence
+print(final_sentence)
+
+cnt = 0
+for i in range(0, len(final_sentence)):
+    if final_sentence[i] in string.whitespace:
+        cnt += 1
+
+print('\n Number of whitespaces is:', cnt)
+
 # d = 0
 # while b < len(a4):
 #     if a4(d-2)[b - 1] != '.':
@@ -98,10 +113,7 @@ print('a5:', a5)
 #
 # # print('Main length:', len(variable))
 # #
-# cnt = 0
-# for i in range(0, len(variable)):
-#     if variable[i] in string.whitespace:
-#         cnt += 1
+
 #
 # print('Count:', cnt)
 # print(variable)
