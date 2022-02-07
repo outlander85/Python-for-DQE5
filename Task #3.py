@@ -1,5 +1,6 @@
 import string
 import re
+from pydoc import replace
 
 variable = """homEwork:
 	tHis iz your homeWork, copy these Text to variable. 
@@ -25,7 +26,7 @@ while a < len(a2):
         a = a+1
 # print('Modified a2:', a2)
 
-a3 = [x.strip().capitalize() for x in a2]
+a3 = [x.strip() for x in a2]
 # print('a3:', a3)
 
 a4 = "\n\t".join(a3)
@@ -42,10 +43,29 @@ a6 = a5.split()
 for i in range(len(a6)):
     if re.findall('[.!?]', a6[i]):
         additional_sentence_words.append(re.sub('[.!?]', '', a6[i]))
-additional_sentence = ' '.join(additional_sentence_words).capitalize() + '.'
+additional_sentence = ' '.join(additional_sentence_words).capitalize()
 # print(additional_sentence)
 
-final_sentence = a5 + ' \n\t' + additional_sentence
+final_sentence = []
+# last_words = 'Here should be the last sentence'
+
+a7 = a5.split('.')
+# print(a7)
+while a7:
+    a8 = a7.pop(0)
+    counter = 0
+    for i in a8:
+        if not i.isalpha():
+            counter += 1
+        elif i == ' ':
+            replace(a8(i), '')
+        else:
+            break
+    a8 = a8[:counter] + a8[counter:].capitalize()
+    if 'this paragraph' in a8:
+        a8 = a8 + '. ' + additional_sentence
+    final_sentence.append(a8)
+final_sentence = '.'.join(final_sentence)
 print(final_sentence)
 
 cnt = 0
