@@ -168,5 +168,15 @@ print(a2)
 
 import re
 
-result = re.sub(r'. \w', '. \W', 'AV Analytics. xidhya AV')
+a5 = """Homework:
+	This is your homework, copy these text to variable.
+	You need to normalize it from letter cases point of view. also, create one more sentence with last words of each existing sentence and add it to the end of this paragraph.
+	It is misspelling here. fix “iz” with correct “is”, but only when it is a mistake.
+	Last is to calculate number of whitespace characters in this text. carefull, not only spaces, but all whitespaces. i got 87. 
+	Variable view paragraph here mistake text whitespaces 87."""
+
+print('a5:', a5, '\n')
+print('a5:', repr(a5), '\n')
+
+result = re.sub(r'\. \w', \g<name>, a5)
 print(result)
