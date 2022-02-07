@@ -54,3 +54,4 @@ for i in range(0, len(final_sentence)):
         cnt += 1
 
 print('\nNumber of whitespaces is:', cnt)
+
