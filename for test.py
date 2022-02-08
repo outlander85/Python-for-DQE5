@@ -175,8 +175,48 @@ a5 = """Homework:
 	Last is to calculate number of whitespace characters in this text. carefull, not only spaces, but all whitespaces. i got 87. 
 	Variable view paragraph here mistake text whitespaces 87."""
 
-print('a5:', a5, '\n')
-print('a5:', repr(a5), '\n')
+# print('a5:', a5, '\n')
+# print('a5:', repr(a5), '\n')
+#
+# a101 = a5.split('.')
+#
+# for a in a101:
+#     for i in a:
+#         if i[0] == ' ':
+#             b[0] == ''
+#
+#         else:
+#             b = i
+#         print(b)
 
-result = re.sub(r'\. \w', \g<name>, a5)
-print(result)
+
+#
+# a100 = a5.split(':')
+# for i, j in enumerate(a100):
+#     if '.' in a100[:i] and a100[i].isalpha():
+#         c = a100[:i] + a100[i].lower() + a100[i+1:]
+#         a100 = c
+#         break
+# print(a100)
+
+
+
+    # print(i, repr(j))
+# print(a100)
+
+# result = re.sub(r'\. \w', '1', a5)
+# print(result)
+
+
+from pydoc import replace
+import re
+
+
+# raw_string = '''homEwork:
+#    tHis iz your homeWork, copy these Text to variable.
+#    You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
+#    it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE.
+#    last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
+# '''
+
+
