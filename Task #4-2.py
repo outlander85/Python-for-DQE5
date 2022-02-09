@@ -8,7 +8,7 @@ example: [{'a': 5, 'b': 7, 'g': 11}, {'a': 3, 'c': 35, 'g': 42}]
 """
 
 # import section
-import random
+from random import randint, sample
 import string
 
 # declaring section
@@ -16,7 +16,7 @@ result_dict = {}
 
 
 def rand_numeric(min_element=1, max_element=100):
-    return random.randint(min_element, max_element)
+    return randint(min_element, max_element)
 
 
 def gen_dict(cod):
@@ -25,7 +25,7 @@ def gen_dict(cod):
     while common_count_of_dicts < cod:
         dict_a = {}
         # generating random length list of unique keys for each dictionary
-        keys_list = random.sample(string.ascii_lowercase, rand_numeric(2, 26))
+        keys_list = sample(string.ascii_lowercase, rand_numeric(2, 26))
         # generating dictionaries
         for i in keys_list:
             random_value = rand_numeric(1, 100)
