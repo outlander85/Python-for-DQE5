@@ -219,4 +219,27 @@ import re
 #    last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
 # '''
 
+choose = ''
+print('Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s' %
+      ('NEWS', 'ADVERTISEMENT', 'PROMOCODE'))
+try:
+    choose = int(input())
+except ValueError:
+    print("You've entered wrong value")
 
+mode = ''
+
+if choose == 1:
+    mode = 'NEWS'
+elif choose == 2:
+    mode = 'ADVERTISEMENT'
+elif choose == 3:
+    mode = 'PROMOCODE'
+else:
+    # print('Please make correct choice')
+    mode = None
+
+if choose in (1, 2, 3):
+    print(f"You've chosen {mode}")
+else:
+    print('Please make correct choice')
