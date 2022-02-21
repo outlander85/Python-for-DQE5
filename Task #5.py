@@ -59,7 +59,7 @@ class Publication:
         if text == 'input':
             print(f'Input {self.date_type} - count of days (use digits)\n')
             text = input()
-        self.date = text
+        self.valid_days = text
 
     def write(self):
         f = open(os.path.abspath('LOG.txt'), 'a')
