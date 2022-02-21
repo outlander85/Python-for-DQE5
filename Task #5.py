@@ -97,10 +97,10 @@ class AddPromoCode(Publication):
         self.type = 'PromoCode'
         self.date_type = 'Valid days'
 
-    def ob_addinfo(self):
+    def add_promo_code(self):
         self.get_date()
-        days = datetime.date(datetime.now()) + timedelta(days=int(self.valid_days))
-        self.addinfo = 'Proposition valid ' + self.valid_days + 'days, actual before:' + str(days.days)
+        final_date = datetime.date(datetime.now()) + timedelta(days=int(self.valid_days))
+        self.addinfo = 'Proposition valid ' + self.valid_days + 'days, actual before:' + str(final_date.days)
 
 
 class Main:
@@ -132,11 +132,11 @@ class Main:
             finally:
                 self.text_feed_add()
         elif choice == '3':
-            obituary = AddPromoCode()
-            obituary.get_article_body()
+            promocode = AddPromoCode()
+            promocode.get_article_body()
             try:
-                obituary.ob_addinfo()
-                obituary.write()
+                promocode.add_promo_code()
+                promocode.write()
             except ValueError:
                 print(self.date_error_message)
             finally:
