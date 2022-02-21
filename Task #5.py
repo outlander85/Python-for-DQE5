@@ -98,7 +98,7 @@ class AddPromoCode(Publication):
         self.date_type = 'Valid days'
 
     def add_promo_code(self):
-        self.get_date()
+        self.get_valid_days()
         final_date = datetime.date(datetime.now()) + timedelta(days=int(self.valid_days))
         self.addinfo = 'Proposition valid ' + self.valid_days + 'days, actual before:' + str(final_date.days)
 
