@@ -37,7 +37,7 @@ class Publication:
         self.valid_days = ''
         self.addinfo = ''
 
-    def get_article_body(self, text='input'):
+    def get_publication_body(self, text='input'):
         if text == 'input':
             print(f'Input {self.article_type} body\n')
             text = input()
@@ -108,7 +108,7 @@ class Main:
         self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s' % \
                             ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
-        self.date_error_message = 'Program will be aborted - please enter correct date nex time\n'
+        self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
         pass
 
     def text_feed_add(self):
@@ -116,13 +116,13 @@ class Main:
         choice = input()
         if choice == '1':
             news = AddNews()
-            news.get_article_body()
+            news.get_publication_body()
             news.get_city_and_cur_date()
             news.write()
             self.text_feed_add()
         elif choice == '2':
             ads = AddAdvertisement()
-            ads.get_article_body()
+            ads.get_publication_body()
             try:
                 ads.adv_calc()
                 ads.write()
@@ -133,7 +133,7 @@ class Main:
                 self.text_feed_add()
         elif choice == '3':
             promocode = AddPromoCode()
-            promocode.get_article_body()
+            promocode.get_publication_body()
             try:
                 promocode.add_promo_code()
                 promocode.write()
