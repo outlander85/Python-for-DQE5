@@ -63,7 +63,7 @@ class Publication:
 
     def write(self):
         f = open(os.path.abspath('LOG.txt'), 'a')
-        f.write('\n'.join([self.header, self.article_body, self.addinfo, '---------------------------\n\n']))
+        f.write('\n'.join([self.header, self.article_body, self.addinfo, '\n----\n\n']))
         f.close()
 
 
