@@ -126,7 +126,6 @@ class Main:
             try:
                 adv.adv_calc()
                 adv.write()
-                self.text_feed_add()
             except ValueError:
                 print(self.date_error_message)
             finally:
