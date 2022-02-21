@@ -13,3 +13,28 @@ dfsd
 Actual until: 11/11/1111, -332475 days left
 ---------------------------
 
+News:
+22
+22, 2022-02-22 00:38:05.769071
+---------------------------
+
+Advertisement:
+fcv
+Actual until: 11/11/1111, -332475 days left
+---------------------------
+
+Advertisement:
+test
+Actual until: 11/11/1111, -332475 days left
+---------------------------
+
+Advertisement:
+asda
+Actual until: 11/11/1111, -332475 days left
+---------------------------
+
+New PromoCode
+eaf
+Proposition valid 23 days, actual before: 2022-03-17
+---------------------------
+

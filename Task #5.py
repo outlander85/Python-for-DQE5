@@ -80,7 +80,7 @@ class AddAdvertisement(Publication):
     def __init__(self):
         super().__init__()
         self.header = 'Advertisement:'
-        self.article_type = 'Ads'
+        self.article_type = 'Adv'
         self.date_type = 'Exp.date'
 
     def adv_calc(self):
@@ -97,10 +97,10 @@ class AddPromoCode(Publication):
         self.type = 'PromoCode'
         self.date_type = 'Valid days'
 
-    def add_promo_code(self):
+    def promo_code_calc(self):
         self.get_valid_days()
         final_date = datetime.date(datetime.now()) + timedelta(days=int(self.valid_days))
-        self.addinfo = 'Proposition valid ' + self.valid_days + 'days, actual before:' + str(final_date.days)
+        self.addinfo = f'Proposition valid {self.valid_days} days, actual before: {str(final_date)}'
 
 
 class Main:
@@ -121,11 +121,11 @@ class Main:
             news.write()
             self.text_feed_add()
         elif choice == '2':
-            ads = AddAdvertisement()
-            ads.get_publication_body()
+            adv = AddAdvertisement()
+            adv.get_publication_body()
             try:
-                ads.adv_calc()
-                ads.write()
+                adv.adv_calc()
+                adv.write()
                 self.text_feed_add()
             except ValueError:
                 print(self.date_error_message)
@@ -135,7 +135,7 @@ class Main:
             promocode = AddPromoCode()
             promocode.get_publication_body()
             try:
-                promocode.add_promo_code()
+                promocode.promo_code_calc()
                 promocode.write()
             except ValueError:
                 print(self.date_error_message)
