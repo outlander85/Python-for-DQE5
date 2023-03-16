@@ -43,12 +43,6 @@ class Publication:
             text = input()
         self.article_body = text
 
-    def get_city_and_cur_date(self, text='input'):
-        if text == 'input':
-            print(f'Input city\n')
-            text = input()
-        self.addinfo = text + ', ' + str(datetime.now())
-
     def get_date(self, text='input'):
         while True:
             if text == 'input':
@@ -83,7 +77,7 @@ class Publication:
 
     def write(self):
         f = open(os.path.abspath('newsfeed.txt'), 'a')
-        f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n']))
+        f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n\n']))
         f.close()
 
 
@@ -93,6 +87,13 @@ class AddNews(Publication):
         super().__init__()
         self.header = 'News -------------------------'
         self.article_type = 'News'
+
+
+    def get_city_and_cur_date(self, text='input'):
+        if text == 'input':
+            print(f'Input city\n')
+            text = input()
+        self.addinfo = text + ', ' + str(datetime.now())
 
 
 class AddAdvertisement(Publication):
