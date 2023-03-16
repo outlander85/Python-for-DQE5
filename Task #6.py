@@ -82,8 +82,8 @@ class Publication:
                     break  # user chose to exit, exit loop and function
 
     def write(self):
-        f = open(os.path.abspath('LOG.txt'), 'a')
-        f.write('\n'.join([self.header, self.article_body, self.addinfo, '\n----\n\n']))
+        f = open(os.path.abspath('newsfeed.txt'), 'a')
+        f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n']))
         f.close()
 
 
@@ -91,7 +91,7 @@ class AddNews(Publication):
 
     def __init__(self):
         super().__init__()
-        self.header = 'News:'
+        self.header = 'News -------------------------'
         self.article_type = 'News'
 
 
@@ -99,7 +99,7 @@ class AddAdvertisement(Publication):
 
     def __init__(self):
         super().__init__()
-        self.header = 'Advertisement:'
+        self.header = 'Advertisement ----------------'
         self.article_type = 'Adv'
         self.date_type = 'Exp.date'
 
@@ -113,7 +113,7 @@ class AddPromoCode(Publication):
 
     def __init__(self):
         super().__init__()
-        self.header = 'PromoCode:'
+        self.header = 'PromoCode --------------------'
         self.type = 'PromoCode'
         self.date_type = 'Valid days'
 
