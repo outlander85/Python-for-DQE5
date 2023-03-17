@@ -25,6 +25,7 @@ Each new record should be added to the end of file. Commit file in git for revie
 """
 from datetime import datetime, timedelta
 import os
+from Task_4_3_v2 import TextNormalizer as norm
 
 
 class Publication:
@@ -40,8 +41,9 @@ class Publication:
     def get_publication_body(self, text='input'):
         if text == 'input':
             print(f'Input {self.article_type} body\n')
-            text = input()
+            text = norm(input()).get_normalized_text()
         self.article_body = text
+        text
 
     def get_date(self, text='input'):
         while True:
@@ -92,7 +94,7 @@ class AddNews(Publication):
     def get_city_and_cur_date(self, text='input'):
         if text == 'input':
             print(f'Input city\n')
-            text = input()
+            text = norm(input()).get_normalized_text()
         self.addinfo = text + ', ' + str(datetime.now())
 
 
@@ -131,6 +133,7 @@ class ReadFromFile(Publication):
         self.default_filename = 'FileForImport.txt'
 
     def read_file(self):
+        date = None
         file_path = input("Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
         if not file_path:
             file_path = self.default_filename
@@ -141,23 +144,26 @@ class ReadFromFile(Publication):
                 fields = line.strip().split(',')
                 if fields[0].lower() == 'news':
                     news = AddNews()
-                    news.article_body = fields[1]
-                    news.addinfo = fields[2]
+                    news.get_publication_body(text=fields[1])
+                    news.get_city_and_cur_date(text=fields[2])
                     news.write()
                 elif fields[0].lower() == 'adv':
                     adv = AddAdvertisement()
-                    adv.article_body = fields[1]
-                    adv.date = datetime.strptime(fields[2], '%d/%m/%Y')
-                    adv.addinfo = fields[3]
+                    adv.get_publication_body(text=fields[1])
+                    date_str = fields[2]
+                    date = datetime.strptime(date_str, '%d/%m/%Y')
+                    adv.get_date(date.strftime('%d/%m/%Y'))
                     adv.write()
                 elif fields[0].lower() == 'promocode':
                     promocode = AddPromoCode()
-                    promocode.article_body = fields[1]
-                    promocode.valid_days = int(fields[2])
-                    promocode.addinfo = fields[3]
+                    promocode.get_publication_body(text=fields[1])
+                    valid_days_str = fields[2]
+                    valid_days = int(valid_days_str)
+                    promocode.get_valid_days(valid_days)
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
+#            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
 
