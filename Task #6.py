@@ -124,10 +124,48 @@ class AddPromoCode(Publication):
         self.addinfo = f'Proposition valid {self.valid_days} days, actual before: {str(final_date)}'
 
 
+class ReadFromFile(Publication):
+
+    def __init__(self):
+        super().__init__()
+        self.default_filename = 'FileForImport.txt'
+
+    def read_file(self):
+        file_path = input("Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
+        if not file_path:
+            file_path = self.default_filename
+        try:
+            with open(file_path) as f:
+                content = f.read().strip().split('---')
+            for line in content:
+                fields = line.strip().split(',')
+                if fields[0].lower() == 'news':
+                    news = AddNews()
+                    news.article_body = fields[1]
+                    news.addinfo = fields[2]
+                    news.write()
+                elif fields[0].lower() == 'adv':
+                    adv = AddAdvertisement()
+                    adv.article_body = fields[1]
+                    adv.date = datetime.strptime(fields[2], '%d/%m/%Y')
+                    adv.addinfo = fields[3]
+                    adv.write()
+                elif fields[0].lower() == 'promocode':
+                    promocode = AddPromoCode()
+                    promocode.article_body = fields[1]
+                    promocode.valid_days = int(fields[2])
+                    promocode.addinfo = fields[3]
+                    promocode.write()
+                else:
+                    print(f"Invalid record: {line}")
+        except IOError:
+            print("Error reading file")
+
+
 class Main:
     def __init__(self):
-        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s' % \
-                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'FINISH PROGRAM')
+        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s '% \
+                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
         self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
         pass
@@ -162,6 +200,10 @@ class Main:
             finally:
                 self.text_feed_add()
         elif choice == '4':
+            addfromfile = ReadFromFile()
+            addfromfile.read_file()
+            self.text_feed_add()
+        elif choice == '5':
             return
         else:
             print(self.error_message)
