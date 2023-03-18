@@ -45,11 +45,13 @@ class Publication:
         self.article_body = text
         text
 
-    def get_date(self, text='input'):
+    def get_date(self, text):
         while True:
             if text == 'input':
                 print(f'Input {self.date_type} in dd/mm/yyyy format\n')
                 text = input()
+            else:
+                text == text
             try:
                 date = datetime.strptime(text, '%d/%m/%Y')
                 self.date = date
@@ -95,7 +97,7 @@ class AddNews(Publication):
         if text == 'input':
             print(f'Input city\n')
             text = norm(input()).get_normalized_text()
-        self.addinfo = text + ', ' + str(datetime.now())
+        self.addinfo = text + ', ' + str(datetime.now().strftime("%d/%m/%Y %H.%M"))
 
 
 class AddAdvertisement(Publication):
@@ -106,10 +108,10 @@ class AddAdvertisement(Publication):
         self.article_type = 'Adv'
         self.date_type = 'Exp.date'
 
-    def adv_calc(self):
-        self.get_date()
+    def adv_calc(self, text='input'):
+        self.get_date(text)
         days = self.date - datetime.now()
-        self.addinfo = f'Actual until: {self.date}, {days.days} days left'
+        self.addinfo = f'Actual until: {self.date.strftime("%d/%m/%Y")}, {days.days} days left'
 
 
 class AddPromoCode(Publication):
@@ -150,9 +152,9 @@ class ReadFromFile(Publication):
                 elif fields[0].lower() == 'adv':
                     adv = AddAdvertisement()
                     adv.get_publication_body(text=fields[1])
-                    date_str = fields[2]
-                    date = datetime.strptime(date_str, '%d/%m/%Y')
-                    adv.get_date(date.strftime('%d/%m/%Y'))
+                    date = fields[2]
+                    # adv.date = date
+                    adv.adv_calc(date)
                     adv.write()
                 elif fields[0].lower() == 'promocode':
                     promocode = AddPromoCode()
