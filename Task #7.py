@@ -1,13 +1,13 @@
 """
-Expand previous Homework 5 with additional class, which allow to provide records by text file:
+Calculate number of words and letters from previous Homeworks 5/6 output test file.
 
-1.Define your input format (one or many records)
+Create two csv:
 
-2.Default folder or user provided file path
+1.word-count (all words are preprocessed in lowercase)
 
-3.Remove file if it was successfully processed
+2.letter, cout_all, count_uppercase, percentage (add header, spacecharacters are not included)
 
-4.Apply case normalization functionality form Homework 3/4
+CSVs should be recreated each time new record added.
 """
 from datetime import datetime, timedelta
 import os
