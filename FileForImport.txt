@@ -1,0 +1,11 @@
+News,Test_News,City
+---
+Adv,Test_Adv,10/10/2023
+---
+Adv,Test_Adv2,12/12/2050
+---
+PromoCode,Test_Promocode,45
+---
+PromoCode,Test_Promocode2,3
+---
+Adv,Test_Adv2,22/10/2023
