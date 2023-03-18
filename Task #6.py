@@ -43,7 +43,6 @@ class Publication:
             print(f'Input {self.article_type} body\n')
             text = norm(input()).get_normalized_text()
         self.article_body = text
-        text
 
     def get_date(self, text):
         while True:
@@ -62,11 +61,13 @@ class Publication:
                 if text.lower() == 'exit':
                     break  # user chose to exit, exit loop and function
 
-    def get_valid_days(self, text='input'):
+    def get_valid_days(self, text):
         while True:
             if text == 'input':
                 print(f'Input {self.date_type} - count of days (use digits, days should be between 0 and 365.)\n')
                 text = input()
+            else:
+                text == text
             try:
                 days = int(text)
                 if days < 0 or days > 365:
@@ -122,10 +123,10 @@ class AddPromoCode(Publication):
         self.type = 'PromoCode'
         self.date_type = 'Valid days'
 
-    def promo_code_calc(self):
-        self.get_valid_days()
+    def promo_code_calc(self, text='input'):
+        self.get_valid_days(text)
         final_date = (datetime.now() + timedelta(days=int(self.valid_days))).date()
-        self.addinfo = f'Proposition valid {self.valid_days} days, actual before: {str(final_date)}'
+        self.addinfo = f'Proposition will be valid for {self.valid_days} days, actual before: {str(final_date.strftime("%d/%m/%Y"))}'
 
 
 class ReadFromFile(Publication):
@@ -136,7 +137,7 @@ class ReadFromFile(Publication):
 
     def read_file(self):
         date = None
-        file_path = input("Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
+        file_path = input(f"Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
         if not file_path:
             file_path = self.default_filename
         try:
@@ -146,28 +147,28 @@ class ReadFromFile(Publication):
                 fields = line.strip().split(',')
                 if fields[0].lower() == 'news':
                     news = AddNews()
-                    news.get_publication_body(text=fields[1])
+                    news.get_publication_body(text=norm(fields[1]).get_normalized_text())
                     news.get_city_and_cur_date(text=fields[2])
                     news.write()
                 elif fields[0].lower() == 'adv':
                     adv = AddAdvertisement()
-                    adv.get_publication_body(text=fields[1])
+                    adv.get_publication_body(text=norm(fields[1]).get_normalized_text())
                     date = fields[2]
-                    # adv.date = date
                     adv.adv_calc(date)
                     adv.write()
                 elif fields[0].lower() == 'promocode':
                     promocode = AddPromoCode()
-                    promocode.get_publication_body(text=fields[1])
-                    valid_days_str = fields[2]
-                    valid_days = int(valid_days_str)
-                    promocode.get_valid_days(valid_days)
+                    promocode.get_publication_body(text=norm(fields[1]).get_normalized_text())
+                    valid_days = fields[2]
+                    promocode.promo_code_calc(valid_days)
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
-#            os.remove(file_path)  # delete file after reading
+            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
+        except IndexError:
+            print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 
 class Main:
