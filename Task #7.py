@@ -12,6 +12,8 @@ CSVs should be recreated each time new record added.
 from datetime import datetime, timedelta
 import os
 import csv
+from collections import Counter
+import re
 from Task_4_3_v2 import TextNormalizer as norm
 
 
@@ -72,17 +74,6 @@ class Publication:
         f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n\n']))
         f.close()
 
-        analyzer = TextAnalyzer()
-        words = analyzer.analyze_text(self.article_body)
-
-        # Create word count csv
-        word_count_file = os.path.abspath('word-count.csv')
-        analyzer.create_word_count_csv(word_count_file, words)
-
-        # Create letter count csv
-        letter_count_file = os.path.abspath('letter-count.csv')
-        analyzer.create_letter_count_csv(letter_count_file, self.article_body)
-
 
 class TextAnalyzer:
     def __init__(self):
@@ -92,31 +83,42 @@ class TextAnalyzer:
 
     def analyze_text(self, text):
         # Calculate word count and letter count
-        words = text.lower().split()
-        self.word_count = len(words)
-        self.letter_count = sum(len(word) for word in words)
+        words = re.findall(r'\b\w+\b', text.lower())  # find all words in text
+        words = [word for word in words if not word.isdigit()]  # exclude words that only contain digits
+        word_count = len(words)
+        letter_count = sum(len(word) for word in words)
 
         # Calculate uppercase count
-        self.uppercase_count = sum(1 for c in text if c.isupper())
+        uppercase_count = sum(1 for c in text if c.isupper())
 
-        return words
+        # Count the frequency of each word
+        word_freq = Counter(words)
 
-    def create_word_count_csv(self, filename, words):
+        # Create a list of tuples containing distinct word and its count
+        word_count_list = [(word, count) for word, count in word_freq.items()]
+
+        # Sort the list alphabetically by word
+        word_count_list.sort(key=lambda x: x[0])
+
+        return word_count_list
+
+    def create_word_count_csv(self, filename, word_count_list):
         # Create csv file with word count
         with open(filename, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows([[word] for word in words])
+            writer = csv.writer(file, delimiter='-')
+            writer.writerows(word_count_list)
 
     def create_letter_count_csv(self, filename, text):
         # Create csv file with letter count
-        letters = set(c for c in text if c.isalpha())
-        total_count = sum(1 for c in text if c.isalpha())
+        lowercase_text = text.lower()  # convert to lowercase
+        letters = set(c for c in lowercase_text if c.isalpha())
+        total_count = sum(1 for c in lowercase_text if c.isalpha())
         uppercase_count = sum(1 for c in text if c.isupper())
         lowercase_count = total_count - uppercase_count
 
         rows = []
         for letter in sorted(letters):
-            count = sum(1 for c in text if c == letter)
+            count = sum(1 for c in lowercase_text if c == letter)
             uppercase = sum(1 for c in text if c == letter and c.isupper())
             percentage = round(count / total_count * 100, 2)
             row = {'Letter': letter, 'Count_all': count, 'Count_uppercase': uppercase, 'Percentage': percentage}
@@ -128,6 +130,20 @@ class TextAnalyzer:
             writer.writeheader()
             writer.writerows(rows)
 
+    def write_csv(self, filename='newsfeed.txt'):
+        with open(filename, 'r') as article_body:
+            text = article_body.read()
+            lines = text.split('\n')
+        analyzer = TextAnalyzer()
+        words = analyzer.analyze_text(text)
+
+        # Create word count csv
+        word_count_file = os.path.abspath('word-count.csv')
+        analyzer.create_word_count_csv(word_count_file, words)
+
+        # Create letter count csv
+        letter_count_file = os.path.abspath('letter-count.csv')
+        analyzer.create_letter_count_csv(letter_count_file, text)
 
 class AddNews(Publication):
 
@@ -224,6 +240,7 @@ class Main:
         pass
 
     def text_feed_add(self):
+        textanalyzer = TextAnalyzer()
         print(self.main_message)
         choice = input()
         if choice == '1':
@@ -261,7 +278,7 @@ class Main:
         else:
             print(self.error_message)
             self.text_feed_add()
-
+        textanalyzer.write_csv()
 
 if __name__ == "__main__":
     Main().text_feed_add()
