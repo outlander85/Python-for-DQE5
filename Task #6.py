@@ -128,7 +128,10 @@ class ReadFromFile(Publication):
             file_path = self.default_filename
         try:
             with open(file_path) as f:
+                num_rows = input("Please enter the number of rows to import (or press 'Enter' for all rows): ")
                 content = f.read().strip().split('---')
+            if num_rows:
+                content = content[:int(num_rows)]
             for line in content:
                 fields = line.strip().split(',')
                 if fields[0].lower() == 'news':
