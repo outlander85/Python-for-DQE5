@@ -5,12 +5,13 @@ Create two csv:
 
 1.word-count (all words are preprocessed in lowercase)
 
-2.letter, cout_all, count_uppercase, percentage (add header, spacecharacters are not included)
+2.letter, count_all, count_uppercase, percentage (add header, spacecharacters are not included)
 
 CSVs should be recreated each time new record added.
 """
 from datetime import datetime, timedelta
 import os
+import csv
 from Task_4_3_v2 import TextNormalizer as norm
 
 
@@ -36,7 +37,7 @@ class Publication:
                 print(f'Input {self.date_type} in dd/mm/yyyy format\n')
                 text = input()
             else:
-                text == text
+                text
             try:
                 date = datetime.strptime(text, '%d/%m/%Y')
                 self.date = date
@@ -53,7 +54,7 @@ class Publication:
                 print(f'Input {self.date_type} - count of days (use digits, days should be between 0 and 365.)\n')
                 text = input()
             else:
-                text == text
+                text
             try:
                 days = int(text)
                 if days < 0 or days > 365:
@@ -71,6 +72,62 @@ class Publication:
         f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n\n']))
         f.close()
 
+        analyzer = TextAnalyzer()
+        words = analyzer.analyze_text(self.article_body)
+
+        # Create word count csv
+        word_count_file = os.path.abspath('word-count.csv')
+        analyzer.create_word_count_csv(word_count_file, words)
+
+        # Create letter count csv
+        letter_count_file = os.path.abspath('letter-count.csv')
+        analyzer.create_letter_count_csv(letter_count_file, self.article_body)
+
+
+class TextAnalyzer:
+    def __init__(self):
+        self.word_count = 0
+        self.letter_count = 0
+        self.uppercase_count = 0
+
+    def analyze_text(self, text):
+        # Calculate word count and letter count
+        words = text.lower().split()
+        self.word_count = len(words)
+        self.letter_count = sum(len(word) for word in words)
+
+        # Calculate uppercase count
+        self.uppercase_count = sum(1 for c in text if c.isupper())
+
+        return words
+
+    def create_word_count_csv(self, filename, words):
+        # Create csv file with word count
+        with open(filename, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows([[word] for word in words])
+
+    def create_letter_count_csv(self, filename, text):
+        # Create csv file with letter count
+        letters = set(c for c in text if c.isalpha())
+        total_count = sum(1 for c in text if c.isalpha())
+        uppercase_count = sum(1 for c in text if c.isupper())
+        lowercase_count = total_count - uppercase_count
+
+        rows = []
+        for letter in sorted(letters):
+            count = sum(1 for c in text if c == letter)
+            uppercase = sum(1 for c in text if c == letter and c.isupper())
+            percentage = round(count / total_count * 100, 2)
+            row = {'Letter': letter, 'Count_all': count, 'Count_uppercase': uppercase, 'Percentage': percentage}
+            rows.append(row)
+
+        fieldnames = ['Letter', 'Count_all', 'Count_uppercase', 'Percentage']
+        with open(filename, mode='w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+
 
 class AddNews(Publication):
 
@@ -78,7 +135,6 @@ class AddNews(Publication):
         super().__init__()
         self.header = 'News -------------------------'
         self.article_type = 'News'
-
 
     def get_city_and_cur_date(self, text='input'):
         if text == 'input':
@@ -122,13 +178,15 @@ class ReadFromFile(Publication):
         self.default_filename = 'FileForImport.txt'
 
     def read_file(self):
-        date = None
         file_path = input(f"Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
         if not file_path:
             file_path = self.default_filename
         try:
             with open(file_path) as f:
+                num_rows = input("Please enter the number of rows to import (or press 'Enter' for all rows): ")
                 content = f.read().strip().split('---')
+            if num_rows:
+                content = content[:int(num_rows)]
             for line in content:
                 fields = line.strip().split(',')
                 if fields[0].lower() == 'news':
@@ -150,7 +208,7 @@ class ReadFromFile(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
-            os.remove(file_path)  # delete file after reading
+#            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
         except IndexError:
