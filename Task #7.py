@@ -224,7 +224,7 @@ class ReadFromFile(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
-#            os.remove(file_path)  # delete file after reading
+            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
         except IndexError:
