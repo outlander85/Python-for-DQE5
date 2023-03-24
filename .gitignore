@@ -10,9 +10,11 @@ __pycache__/
 
 #User defined
 /LodePaint/*
-word-count.csv
-letter-count.csv
-temp.py
+/word-count.csv
+/letter-count.csv
+/temp.py
+/newsfeed.txt
+/OLD_Task #3.py
 
 
 # Distribution / packaging
@@ -136,6 +138,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/LodePaint/Manual/pages/colormodels.html
-/LodePaint/Skins/dark/gui.png
-/newsfeed.txt
+

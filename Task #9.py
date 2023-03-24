@@ -318,14 +318,16 @@ class ReadFromXML(Publication):
 #            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
+        except AttributeError:
+            print(f"Something wrong with '{file_path}' file structure, please check and fix it or choose the correct one.")
         except ET.ParseError:
             print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 
 class Main:
     def __init__(self):
-        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s '% \
-                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'FINISH PROGRAM')
+        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s\n7 - to %s '% \
+                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'ADD FROM XML', 'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
         self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
         pass
@@ -369,6 +371,10 @@ class Main:
             addfromjson.read_json()
             self.text_feed_add()
         elif choice == '6':
+            addfromxml = ReadFromXML()
+            addfromxml.read_xml()
+            self.text_feed_add()
+        elif choice == '7':
             return
         else:
             print(self.error_message)
