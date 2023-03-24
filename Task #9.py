@@ -1,5 +1,5 @@
 """
-Expand previous Homework 5/6/7 with additional class, which allow to provide records by JSON file:
+Expand previous Homework 5/6/7/8 with additional class, which allow to provide records by XML file:
 
 1.Define your input format (one or many records)
 
@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import os
 import json
 import csv
+import xml.etree.ElementTree as ET
 from collections import Counter
 import re
 from Task_4_3_v2 import TextNormalizer as norm
@@ -257,7 +258,7 @@ class ReadFromJSON(Publication):
                     elif record.get('type').lower() == 'adv':
                         adv = AddAdvertisement()
                         adv.get_publication_body(text=norm(record.get('body')).get_normalized_text())
-                        date = record.get('date')
+                        date = str(record.get('date'))
                         adv.adv_calc(date)
                         adv.write()
                     elif record.get('type').lower() == 'promocode':
@@ -272,6 +273,52 @@ class ReadFromJSON(Publication):
         except IOError:
             print("Error reading file")
         except json.decoder.JSONDecodeError:
+            print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
+
+
+class ReadFromXML(Publication):
+    def __init__(self):
+        super().__init__()
+        self.default_xml_filename = 'XMLForImport.xml'
+
+    def read_xml(self):
+        file_path = input(f"Please provide XML file path and filename or press 'Enter' to use the default filename ({self.default_xml_filename}): ")
+        if not file_path:
+            file_path = self.default_xml_filename
+
+        try:
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+            num_rows = input("Please enter the number of rows to import (or press 'Enter' for all rows): ")
+            records = root.findall('record')
+            if num_rows:
+                records = records[:int(num_rows)]
+            for record in records:
+                record_type = record.find('type').text.lower()
+                record_body = norm(record.find('body').text).get_normalized_text()
+                if record_type == 'news':
+                    news = AddNews()
+                    news.get_publication_body(text=record_body)
+                    news.get_city_and_cur_date(text=record.find('location').text)
+                    news.write()
+                elif record_type == 'adv':
+                    adv = AddAdvertisement()
+                    adv.get_publication_body(text=record_body)
+                    date = str(record.find('date').text)
+                    adv.adv_calc(date)
+                    adv.write()
+                elif record_type == 'promocode':
+                    promocode = AddPromoCode()
+                    promocode.get_publication_body(text=record_body)
+                    valid_days = str(record.find('valid_days').text)
+                    promocode.promo_code_calc(valid_days)
+                    promocode.write()
+                else:
+                    print(f"Invalid record: {record}")
+#            os.remove(file_path)  # delete file after reading
+        except IOError:
+            print("Error reading file")
+        except ET.ParseError:
             print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 

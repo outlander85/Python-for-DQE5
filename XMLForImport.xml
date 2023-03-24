@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records>
+    <record>
+        <type>news</type>
+        <body>This is the body of the news article.</body>
+        <location>New York City</location>
+    </record>
+    <record>
+        <type>adv</type>
+        <body>This is the body of the advertisement.</body>
+        <date>25/12/2024</date>
+    </record>
+    <record>
+        <type>promocode</type>
+        <body>This is the body of the promo code.</body>
+        <valid_days>7</valid_days>
+    </record>
+	    <record>
+        <type>adv</type>
+        <body>This is the body of the advertisement2.</body>
+        <date>11/12/2100</date>
+    </record>
+	    <record>
+        <type>news</type>
+        <body>This is the body of the news article.</body>
+        <location>Warsaw</location>
+    </record>
+</records>
