@@ -243,8 +243,11 @@ class ReadFromJSON(Publication):
 
         try:
             with open(file_path) as f:
+                num_rows = input("Please enter the number of rows to import (or press 'Enter' for all rows): ")
                 data = json.load(f)
                 records = data.get('records')
+                if num_rows:
+                    records = records[:int(num_rows)]
                 for record in records:
                     if record.get('type').lower() == 'news':
                         news = AddNews()
@@ -265,10 +268,10 @@ class ReadFromJSON(Publication):
                         promocode.write()
                     else:
                         print(f"Invalid record: {record}")
-#            os.remove(file_path)  # delete file after reading
+            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
-        except KeyError:
+        except json.decoder.JSONDecodeError:
             print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 
