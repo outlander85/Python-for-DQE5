@@ -15,6 +15,60 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 import re
 from Task_4_3_v2 import TextNormalizer as norm
+import pyodbc
+
+
+class DatabaseManager:
+    def __init__(self):
+        self.connection = pyodbc.connect('Driver={SQLite3 ODBC Driver};'
+                                         'Direct=True;'
+                                         'Database=newsfeed.db;'
+                                         'String Types=Unicode')
+        self.cursor = self.connection.cursor()
+        self.tables = {}
+
+    def create_table(self, table_name, columns):
+        columns_str = ', '.join([f'{name} {datatype}' for name, datatype in columns.items()])
+        query = f'CREATE TABLE IF NOT EXISTS {table_name} ({columns_str})'
+        self.cursor.execute(query)
+        self.tables[table_name] = list(columns.keys())
+
+    def close_connection(self):
+        self.connection.close()
+
+    def insert_record(self, record):
+        table_name = record.article_type.lower()
+        columns = self.tables[table_name]
+        placeholders = ', '.join(['?' for _ in columns])
+        values = [getattr(record, column) for column in columns]
+        query = f'INSERT INTO {table_name} ({", ".join(columns)}) VALUES ({placeholders})'
+        try:
+            self.cursor.execute(query, values)
+            self.connection.commit()
+            print('Record added successfully!')
+        except pyodbc.IntegrityError:
+            print('Record already exists in the database!')
+
+    def create_news_table(self):
+        self.create_table('news', {
+            'Body': 'TEXT',
+            'City': 'TEXT',
+            'Date': 'TEXT'
+        })
+
+    def create_advertisement_table(self):
+        self.create_table('advertisement', {
+            'Body': 'TEXT',
+            'Actual_until_date': 'TEXT',
+            'Days_left': 'TEXT'
+        })
+
+    def create_promocode_table(self):
+        self.create_table('promocode', {
+            'Body': 'TEXT',
+            'Valid_days': 'TEXT',
+            'Actual_before_date': 'TEXT'
+        })
 
 
 class Publication:
@@ -70,6 +124,18 @@ class Publication:
                     break  # user chose to exit, exit loop and function
 
     def write(self):
+
+        # Create needed tables
+        db = DatabaseManager()
+        db.create_news_table()
+        db.create_advertisement_table()
+        db.create_promocode_table()
+
+        # Add a record to the database
+        db.insert_record(self)
+        db.close_connection()
+
+        # Write to a file
         f = open(os.path.abspath('newsfeed.txt'), 'a')
         f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n\n']))
         f.close()
@@ -145,6 +211,7 @@ class TextAnalyzer:
         letter_count_file = os.path.abspath('letter-count.csv')
         analyzer.create_letter_count_csv(letter_count_file, text)
 
+
 class AddNews(Publication):
 
     def __init__(self):
@@ -194,7 +261,8 @@ class ReadFromFile(Publication):
         self.default_filename = 'FileForImport.txt'
 
     def read_file(self):
-        file_path = input(f"Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
+        file_path = input(
+            f"Please provide file path and filename or press 'Enter' to use default filename ({self.default_filename}): ")
         if not file_path:
             file_path = self.default_filename
         try:
@@ -238,7 +306,8 @@ class ReadFromJSON(Publication):
         self.default_json_filename = 'JSONForImport.json'
 
     def read_json(self):
-        file_path = input(f"Please provide JSON file path and filename or press 'Enter' to use the default filename ({self.default_json_filename}): ")
+        file_path = input(
+            f"Please provide JSON file path and filename or press 'Enter' to use the default filename ({self.default_json_filename}): ")
         if not file_path:
             file_path = self.default_json_filename
 
@@ -282,7 +351,8 @@ class ReadFromXML(Publication):
         self.default_xml_filename = 'XMLForImport.xml'
 
     def read_xml(self):
-        file_path = input(f"Please provide XML file path and filename or press 'Enter' to use the default filename ({self.default_xml_filename}): ")
+        file_path = input(
+            f"Please provide XML file path and filename or press 'Enter' to use the default filename ({self.default_xml_filename}): ")
         if not file_path:
             file_path = self.default_xml_filename
 
@@ -315,19 +385,21 @@ class ReadFromXML(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {record}")
-#            os.remove(file_path)  # delete file after reading
+        #            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
         except AttributeError:
-            print(f"Something wrong with '{file_path}' file structure, please check and fix it or choose the correct one.")
+            print(
+                f"Something wrong with '{file_path}' file structure, please check and fix it or choose the correct one.")
         except ET.ParseError:
             print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 
 class Main:
     def __init__(self):
-        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s\n7 - to %s '% \
-                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'ADD FROM XML', 'FINISH PROGRAM')
+        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s\n7 - to %s ' % \
+                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'ADD FROM XML',
+                             'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
         self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
         pass
@@ -381,6 +453,6 @@ class Main:
             self.text_feed_add()
         textanalyzer.write_csv()
 
+
 if __name__ == "__main__":
     Main().text_feed_add()
-
