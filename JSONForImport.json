@@ -1,0 +1,34 @@
+{
+    "records": [
+        {
+            "type": "news",
+            "body": "Some news content here",
+            "location": "New York, 20/03/2022"
+        },
+        {
+            "type": "news",
+            "body": "Test content",
+            "location": "New York, 20/12/2200"
+        },
+        {
+            "type": "adv",
+            "body": "Some advertisement content here",
+            "date": "24/03/2022"
+        },
+        {
+            "type": "adv",
+            "body": "Some advertisement content here2",
+            "date": "11/11/1111"
+        },
+        {
+            "type": "promocode",
+            "body": "New code",
+            "valid_days": 7
+        },
+        {
+            "type": "promocode",
+            "body": "New code 2",
+            "valid_days": 128
+        }
+    ]
+}

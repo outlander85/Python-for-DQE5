@@ -230,10 +230,52 @@ class ReadFromFile(Publication):
             print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
 
 
+class ReadFromJSON(Publication):
+
+    def __init__(self):
+        super().__init__()
+        self.default_json_filename = 'JSONForImport.json'
+
+    def read_json(self):
+        file_path = input(f"Please provide JSON file path and filename or press 'Enter' to use the default filename ({self.default_json_filename}): ")
+        if not file_path:
+            file_path = self.default_json_filename
+
+        try:
+            with open(file_path) as f:
+                data = json.load(f)
+                records = data.get('records')
+                for record in records:
+                    if record.get('type').lower() == 'news':
+                        news = AddNews()
+                        news.get_publication_body(text=norm(record.get('body')).get_normalized_text())
+                        news.get_city_and_cur_date(text=record.get('location'))
+                        news.write()
+                    elif record.get('type').lower() == 'adv':
+                        adv = AddAdvertisement()
+                        adv.get_publication_body(text=norm(record.get('body')).get_normalized_text())
+                        date = str(record.get('date'))
+                        adv.adv_calc(date)
+                        adv.write()
+                    elif record.get('type').lower() == 'promocode':
+                        promocode = AddPromoCode()
+                        promocode.get_publication_body(text=norm(record.get('body')).get_normalized_text())
+                        valid_days = str(record.get('valid_days'))
+                        promocode.promo_code_calc(valid_days)
+                        promocode.write()
+                    else:
+                        print(f"Invalid record: {record}")
+#            os.remove(file_path)  # delete file after reading
+        except IOError:
+            print("Error reading file")
+        except KeyError:
+            print(f"Something wrong with '{file_path}' file, please check and fix it or choose the correct one.")
+
+
 class Main:
     def __init__(self):
-        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s '% \
-                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'FINISH PROGRAM')
+        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s '% \
+                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
         self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
         pass
@@ -273,6 +315,10 @@ class Main:
             addfromfile.read_file()
             self.text_feed_add()
         elif choice == '5':
+            addfromjson = ReadFromJSON()
+            addfromjson.read_json()
+            self.text_feed_add()
+        elif choice == '6':
             return
         else:
             print(self.error_message)
