@@ -40,10 +40,17 @@ class DatabaseManager:
 
     def insert_record(self, record):
         table_name = record.article_type.lower()
+        print(f'table_name: {table_name}')
         columns = self.tables[table_name]
+        print(f'columns: {columns}')
         placeholders = ', '.join(['?' for _ in columns])
+        print(f'placeholders: {placeholders}')
+        print(record)
+        print(columns)
         values = [getattr(record, column) for column in columns]
+        print(f'values: {values}')
         query = f'INSERT INTO {table_name} ({", ".join(columns)}) VALUES ({placeholders})'
+        print(query)
         try:
             self.cursor.execute(query, values)
             self.connection.commit()
@@ -220,6 +227,9 @@ class AddNews(Publication):
         super().__init__()
         self.header = 'News -------------------------'
         self.article_type = 'News'
+        self.Body = ''
+        self.City = ''
+        self.Date = ''
 
     def get_city_and_cur_date(self, text='input'):
         if text == 'input':
