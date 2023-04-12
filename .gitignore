@@ -8,15 +8,6 @@ __pycache__/
 
 
 
-#User defined
-/LodePaint/*
-/word-count.csv
-/letter-count.csv
-/temp.py
-/newsfeed.txt
-/OLD_Task #3.py
-
-
 # Distribution / packaging
 .Python
 build/
@@ -138,4 +129,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+#User defined
+/LodePaint/*
+/word-count.csv
+/letter-count.csv
+/temp.py
+/newsfeed.txt
+/OLD_Task #3.py
+/newsfeed.db
+
 
