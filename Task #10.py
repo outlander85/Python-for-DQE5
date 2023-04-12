@@ -85,16 +85,16 @@ class Publication:
         self.header = ''
         self.article_type = ''
         self.date_type = ''
-        self.article_body = ''
-        self.date = ''
-        self.valid_days = ''
+        self.Body = ''
+        self.Date = ''
+        self.Valid_days = ''
         self.addinfo = ''
 
     def get_publication_body(self, text='input'):
         if text == 'input':
             print(f'Input {self.article_type} body\n')
             text = norm(input()).get_normalized_text()
-        self.article_body = text
+        self.Body = text
 
     def get_date(self, text):
         while True:
@@ -146,7 +146,7 @@ class Publication:
 
         # Write to a file
         f = open(os.path.abspath('newsfeed.txt'), 'a')
-        f.write('\n'.join([self.header, self.article_body, self.addinfo, '------------------------------\n\n\n']))
+        f.write('\n'.join([self.header, self.Body, self.addinfo, '------------------------------\n\n\n']))
         f.close()
 
 
@@ -235,7 +235,9 @@ class AddNews(Publication):
         if text == 'input':
             print(f'Input city\n')
             text = norm(input()).get_normalized_text()
-        self.addinfo = text + ', ' + str(datetime.now().strftime("%d/%m/%Y %H.%M"))
+        self.City = text
+        self.Date = str(datetime.now().strftime("%d/%m/%Y %H.%M"))
+        self.addinfo = f'{self.City}, {self.Date}'
 
 
 class AddAdvertisement(Publication):
@@ -243,22 +245,29 @@ class AddAdvertisement(Publication):
     def __init__(self):
         super().__init__()
         self.header = 'Advertisement ----------------'
-        self.article_type = 'Adv'
+        self.article_type = 'advertisement'
         self.date_type = 'Exp.date'
+        self.Actual_until_date = ''
+        self.Days_left = ''
 
     def adv_calc(self, text='input'):
         self.get_date(text)
         days = self.date - datetime.now()
-        self.addinfo = f'Actual until: {self.date.strftime("%d/%m/%Y")}, {days.days} days left'
+        self.Days_left = days.days
+        self.Actual_until_date = self.date.strftime("%d/%m/%Y")
+        self.addinfo = f'Actual until: {self.date.strftime("%d/%m/%Y")}, {self.Days_left} days left'
 
 
 class AddPromoCode(Publication):
 
     def __init__(self):
         super().__init__()
-        self.header = 'PromoCode --------------------'
-        self.type = 'PromoCode'
-        self.date_type = 'Valid days'
+        self.header = 'Promocode -------------------'
+        self.article_type = 'promocode'
+        self.date_type = 'Valid.until'
+        self.Actual_before_date = ''
+        self.Days_left = ''
+        self.table_name = 'promocode'
 
     def promo_code_calc(self, text='input'):
         self.get_valid_days(text)
