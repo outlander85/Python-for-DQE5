@@ -272,7 +272,9 @@ class AddPromoCode(Publication):
     def promo_code_calc(self, text='input'):
         self.get_valid_days(text)
         final_date = (datetime.now() + timedelta(days=int(self.valid_days))).date()
-        self.addinfo = f'Proposition will be valid for {self.valid_days} days, actual before: {str(final_date.strftime("%d/%m/%Y"))}'
+        self.Actual_before_date = str(final_date.strftime("%d/%m/%Y"))
+        self.Valid_days = str(self.valid_days)
+        self.addinfo = f'Proposition will be valid for {self.valid_days} days, actual before: {self.Actual_before_date}'
 
 
 class ReadFromFile(Publication):
@@ -313,7 +315,7 @@ class ReadFromFile(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
-            os.remove(file_path)  # delete file after reading
+#            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
         except IndexError:
@@ -359,7 +361,7 @@ class ReadFromJSON(Publication):
                         promocode.write()
                     else:
                         print(f"Invalid record: {record}")
-            os.remove(file_path)  # delete file after reading
+#            os.remove(file_path)  # delete file after reading
         except IOError:
             print("Error reading file")
         except json.decoder.JSONDecodeError:

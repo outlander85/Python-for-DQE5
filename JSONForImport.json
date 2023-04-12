@@ -3,12 +3,12 @@
         {
             "type": "news",
             "body": "Some news content here",
-            "location": "New York, 20/03/2022"
+            "location": "New York"
         },
         {
             "type": "news",
             "body": "Test content",
-            "location": "New York, 20/12/2200"
+            "location": "New York"
         },
         {
             "type": "adv",
