@@ -404,7 +404,7 @@ class ReadFromXML(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {record}")
-                    os.remove(file_path)  # delete file after reading or comment to disable the delete function
+            os.remove(file_path)  # delete file after reading or comment to disable the delete function
         except IOError:
             print("Error reading file")
         except AttributeError:
@@ -416,11 +416,11 @@ class ReadFromXML(Publication):
 
 class Main:
     def __init__(self):
-        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s\n6 - to %s\n7 - to %s ' % \
-                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'ADD FROM JSON', 'ADD FROM XML',
-                             'FINISH PROGRAM')
+        self.main_message = 'Please choose publication variant:\n1 - for %s\n2 - for %s\n3 - for %s\n4 - to %s\n5 - to %s' % \
+                            ('NEWS', 'ADVERTISEMENT', 'PROMOCODE', 'ADD FROM FILE', 'FINISH PROGRAM')
         self.error_message = 'Please make correct choice'
         self.date_error_message = 'Program will be aborted - please enter correct date next time\n'
+        self.add_from_file_message = 'Please choose file format:\n1 - TXT\n2 - JSON\n3 - XML'
         pass
 
     def text_feed_add(self):
@@ -454,18 +454,21 @@ class Main:
             finally:
                 self.text_feed_add()
         elif choice == '4':
-            addfromfile = ReadFromFile()
-            addfromfile.read_file()
+            print(self.add_from_file_message)
+            file_choice = input()
+            if file_choice == '1':
+                addfromfile = ReadFromFile()
+                addfromfile.read_file()
+            elif file_choice == '2':
+                addfromjson = ReadFromJSON()
+                addfromjson.read_json()
+            elif file_choice == '3':
+                addfromxml = ReadFromXML()
+                addfromxml.read_xml()
+            else:
+                print(self.error_message)
             self.text_feed_add()
         elif choice == '5':
-            addfromjson = ReadFromJSON()
-            addfromjson.read_json()
-            self.text_feed_add()
-        elif choice == '6':
-            addfromxml = ReadFromXML()
-            addfromxml.read_xml()
-            self.text_feed_add()
-        elif choice == '7':
             return
         else:
             print(self.error_message)
