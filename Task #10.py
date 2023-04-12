@@ -40,22 +40,18 @@ class DatabaseManager:
 
     def insert_record(self, record):
         table_name = record.article_type.lower()
-        print(f'table_name: {table_name}')
         columns = self.tables[table_name]
-        print(f'columns: {columns}')
         placeholders = ', '.join(['?' for _ in columns])
-        print(f'placeholders: {placeholders}')
-        print(record)
-        print(columns)
         values = [getattr(record, column) for column in columns]
-        print(f'values: {values}')
-        query = f'INSERT INTO {table_name} ({", ".join(columns)}) VALUES ({placeholders})'
-        print(query)
-        try:
-            self.cursor.execute(query, values)
+        query = f'SELECT COUNT(*) FROM {table_name} WHERE '
+        query += ' AND '.join([f'{col} = ?' for col in columns])
+        duplicate_check = self.cursor.execute(query, values).fetchone()[0]
+        if duplicate_check == 0:
+            insert_query = f'INSERT INTO {table_name} ({", ".join(columns)}) VALUES ({placeholders})'
+            self.cursor.execute(insert_query, values)
             self.connection.commit()
             print('Record added successfully!')
-        except pyodbc.IntegrityError:
+        else:
             print('Record already exists in the database!')
 
     def create_news_table(self):
@@ -315,7 +311,7 @@ class ReadFromFile(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {line}")
-#            os.remove(file_path)  # delete file after reading
+            os.remove(file_path)  # delete file after reading or comment to disable the delete function
         except IOError:
             print("Error reading file")
         except IndexError:
@@ -361,7 +357,7 @@ class ReadFromJSON(Publication):
                         promocode.write()
                     else:
                         print(f"Invalid record: {record}")
-#            os.remove(file_path)  # delete file after reading
+            os.remove(file_path)  # delete file after reading or comment to disable the delete function
         except IOError:
             print("Error reading file")
         except json.decoder.JSONDecodeError:
@@ -408,7 +404,7 @@ class ReadFromXML(Publication):
                     promocode.write()
                 else:
                     print(f"Invalid record: {record}")
-        #            os.remove(file_path)  # delete file after reading
+                    os.remove(file_path)  # delete file after reading or comment to disable the delete function
         except IOError:
             print("Error reading file")
         except AttributeError:
